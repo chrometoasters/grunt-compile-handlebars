@@ -200,7 +200,9 @@ module.exports = function(grunt) {
         usedHelpers.push(fullPath);
       }
 
-      handlebars.registerHelper(name, require(fs.realpathSync(helper)));
+      // hotfix for https://github.com/patrickkettner/grunt-compile-handlebars/issues/55
+      var name_unpathed = name.substr( name.lastIndexOf('/') + 1 );
+      handlebars.registerHelper(name_unpathed, require(fs.realpathSync(helper)));
     });
 
     partials.forEach(function(partial) {
